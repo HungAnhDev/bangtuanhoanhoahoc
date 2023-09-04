@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bảng Tuần Hoàn Hoá Học</title>
+</head>
+<body>
+    <div>
+        <label for="elementInput">Nhập tên, ký tự nguyên tố hoá học hoặc số hiệu nguyên tử (Z):</label>
+        <input type="text" id="elementInput">
+        <button id="searchButton">Tìm Kiếm</button>
+    </div>
+    <div id="resultBox">
+        <!-- Dữ liệu kết quả sẽ được hiển thị ở đây -->
+    </div>
+    <script>
+        const elementsData = [
+    {
+        "atomicNumber": 1,
+        "symbol": "H",
+        "name": "Hydrogen",
+        "electronConfiguration": "1s¹",
+        "type": "Nonmetal",
+        "group_block": "Hydrogen",
+        "period": 1,
+        "vietnameseName": "Hyđrô",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 2,
+        "symbol": "He",
+        "name": "Helium",
+        "electronConfiguration": "1s²",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 1,
+        "vietnameseName": "Heli",
+        "group": "VIIIA"
+    },
+    {
+        "atomicNumber": 3,
+        "symbol": "Li",
+        "name": "Lithium",
+        "electronConfiguration": "1s² 2s¹",
+        "type": "Alkali Metal",
+        "group_block": "Alkali Metal",
+        "period": 2,
+        "vietnameseName": "Liti",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 4,
+        "symbol": "Be",
+        "name": "Beryllium",
+        "electronConfiguration": "1s² 2s²",
+        "type": "Alkaline Earth Metal",
+        "group_block": "Alkaline Earth Metal",
+        "period": 2,
+        "vietnameseName": "Berili",
+        "group": "IIA"
+    },
+    {
+        "atomicNumber": 5,
+        "symbol": "B",
+        "name": "Boron",
+        "electronConfiguration": "1s² 2s² 2p¹",
+        "type": "Metalloid",
+        "group_block": "Metalloid",
+        "period": 2,
+        "vietnameseName": "Bo",
+        "group": "IIIB"
+    },
+    {
+        "atomicNumber": 6,
+        "symbol": "C",
+        "name": "Carbon",
+        "electronConfiguration": "1s² 2s² 2p²",
+        "type": "Nonmetal",
+        "group_block": "Carbon",
+        "period": 2,
+        "vietnameseName": "Cacbon",
+        "group": "IVB"
+    },
+    {
+        "atomicNumber": 7,
+        "symbol": "N",
+        "name": "Nitrogen",
+        "electronConfiguration": "1s² 2s² 2p³",
+        "type": "Nonmetal",
+        "group_block": "Nitrogen",
+        "period": 2,
+        "vietnameseName": "Nitơ",
+        "group": "VB"
+    },
+    {
+        "atomicNumber": 8,
+        "symbol": "O",
+        "name": "Oxygen",
+        "electronConfiguration": "1s² 2s² 2p⁴",
+        "type": "Nonmetal",
+        "group_block": "Oxygen",
+        "period": 2,
+        "vietnameseName": "Oxi",
+        "group": "VIB"
+    },
+    {
+        "atomicNumber": 9,
+        "symbol": "F",
+        "name": "Fluorine",
+        "electronConfiguration": "1s² 2s² 2p⁵",
+        "type": "Nonmetal",
+        "group_block": "Halogen",
+        "period": 2,
+        "vietnameseName": "Flo",
+        "group": "VIIA"
+    },
+    {
+        "atomicNumber": 10,
+        "symbol": "Ne",
+        "name": "Neon",
+        "electronConfiguration": "1s² 2s² 2p⁶",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 2,
+        "vietnameseName": "Neon",
+        "group": "VIIIA"
+    },
+    {
+        "atomicNumber": 11,
+        "symbol": "Na",
+        "name": "Sodium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s¹",
+        "type": "Alkali Metal",
+        "group_block": "Alkali Metal",
+        "period": 3,
+        "vietnameseName": "Natri",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 12,
+        "symbol": "Mg",
+        "name": "Magnesium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s²",
+        "type": "Alkaline Earth Metal",
+        "group_block": "Alkaline Earth Metal",
+        "period": 3,
+        "vietnameseName": "Magiê",
+        "group": "IIA"
+    },
+    {
+        "atomicNumber": 13,
+        "symbol": "Al",
+        "name": "Aluminum",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p¹",
+        "type": "Post-Transition Metal",
+        "group_block": "Boron",
+        "period": 3,
+        "vietnameseName": "Nhôm",
+        "group": "IIIA"
+    },
+    {
+        "atomicNumber": 14,
+        "symbol": "Si",
+        "name": "Silicon",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p²",
+        "type": "Metalloid",
+        "group_block": "Carbon",
+        "period": 3,
+        "vietnameseName": "Silic",
+        "group": "IVA"
+    },
+    {
+        "atomicNumber": 15,
+        "symbol": "P",
+        "name": "Phosphorus",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p³",
+        "type": "Nonmetal",
+        "group_block": "Nitrogen",
+        "period": 3,
+        "vietnameseName": "Photpho",
+        "group": "VA"
+    },
+    {
+        "atomicNumber": 16,
+        "symbol": "S",
+        "name": "Sulfur",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁴",
+        "type": "Nonmetal",
+        "group_block": "Oxygen",
+        "period": 3,
+        "vietnameseName": "Lưu huỳnh",
+        "group": "VIA"
+    },
+    {
+        "atomicNumber": 17,
+        "symbol": "Cl",
+        "name": "Chlorine",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁵",
+        "type": "Nonmetal",
+        "group_block": "Halogen",
+        "period": 3,
+        "vietnameseName": "Clo",
+        "group": "VIIA"
+    },
+    {
+        "atomicNumber": 18,
+        "symbol": "Ar",
+        "name": "Argon",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 3,
+        "vietnameseName": "Agon",
+        "group": "VIIIA"
+    },
+    {
+        "atomicNumber": 19,
+        "symbol": "K",
+        "name": "Potassium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹",
+        "type": "Alkali Metal",
+        "group_block": "Alkali Metal",
+        "period": 4,
+        "vietnameseName": "Kali",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 20,
+        "symbol": "Ca",
+        "name": "Calcium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s²",
+        "type": "Alkaline Earth Metal",
+        "group_block": "Alkaline Earth Metal",
+        "period": 4,
+        "vietnameseName": "Canxi",
+        "group": "IIA"
+    },
+    {
+        "atomicNumber": 21,
+        "symbol": "Sc",
+        "name": "Scandium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹",
+        "type": "Transition Metal",
+        "group_block": "Scandium",
+        "period": 4,
+        "vietnameseName": "Scandi",
+        "group": "IIIB"
+    },
+    {
+        "atomicNumber": 22,
+        "symbol": "Ti",
+        "name": "Titanium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d²",
+        "type": "Transition Metal",
+        "group_block": "Titanium",
+        "period": 4,
+        "vietnameseName": "Titan",
+        "group": "IVB"
+    },
+    {
+        "atomicNumber": 23,
+        "symbol": "V",
+        "name": "Vanadium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d³",
+        "type": "Transition Metal",
+        "group_block": "Vanadium",
+        "period": 4,
+        "vietnameseName": "Vanadi",
+        "group": "VB"
+    },
+    {
+        "atomicNumber": 24,
+        "symbol": "Cr",
+        "name": "Chromium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹ 3d⁵",
+        "type": "Transition Metal",
+        "group_block": "Chromium",
+        "period": 4,
+        "vietnameseName": "Crôm",
+        "group": "VIB"
+    },
+    {
+        "atomicNumber": 25,
+        "symbol": "Mn",
+        "name": "Manganese",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁵",
+        "type": "Transition Metal",
+        "group_block": "Manganese",
+        "period": 4,
+        "vietnameseName": "Mangan",
+        "group": "VIIB"
+    },
+    {
+        "atomicNumber": 26,
+        "symbol": "Fe",
+        "name": "Iron",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁶",
+        "type": "Transition Metal",
+        "group_block": "Iron",
+        "period": 4,
+        "vietnameseName": "Sắt",
+        "group": "VIIIB"
+    },
+    {
+        "atomicNumber": 27,
+        "symbol": "Co",
+        "name": "Cobalt",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁷",
+        "type": "Transition Metal",
+        "group_block": "Cobalt",
+        "period": 4,
+        "vietnameseName": "Coban",
+        "group": "VIIIB"
+    },
+    {
+        "atomicNumber": 28,
+        "symbol": "Ni",
+        "name": "Nickel",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁸",
+        "type": "Transition Metal",
+        "group_block": "Nickel",
+        "period": 4,
+        "vietnameseName": "Niken",
+        "group": "VIIIB"
+    },
+    {
+        "atomicNumber": 29,
+        "symbol": "Cu",
+        "name": "Copper",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁹",
+        "type": "Transition Metal",
+        "group_block": "Copper",
+        "period": 4,
+        "vietnameseName": "Đồng",
+        "group": "IB"
+    },
+    {
+        "atomicNumber": 30,
+        "symbol": "Zn",
+        "name": "Zinc",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰",
+        "type": "Transition Metal",
+        "group_block": "Zinc",
+        "period": 4,
+        "vietnameseName": "Kẽm",
+        "group": "IIB"
+    },
+    {
+        "atomicNumber": 31,
+        "symbol": "Ga",
+        "name": "Gallium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p¹",
+        "type": "Post-Transition Metal",
+        "group_block": "Boron",
+        "period": 4,
+        "vietnameseName": "Gali",
+        "group": "IIIA"
+    },
+    {
+        "atomicNumber": 32,
+        "symbol": "Ge",
+        "name": "Germanium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p²",
+        "type": "Metalloid",
+        "group_block": "Carbon",
+        "period": 4,
+        "vietnameseName": "Gecmani",
+        "group": "IVA"
+    },
+    {
+        "atomicNumber": 33,
+        "symbol": "As",
+        "name": "Arsenic",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p³",
+        "type": "Metalloid",
+        "group_block": "Nitrogen",
+        "period": 4,
+        "vietnameseName": "Axit photpho",
+        "group": "VA"
+    },
+    {
+        "atomicNumber": 34,
+        "symbol": "Se",
+        "name": "Selenium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁴",
+        "type": "Nonmetal",
+        "group_block": "Oxygen",
+        "period": 4,
+        "vietnameseName": "Selen",
+        "group": "VIA"
+    },
+    {
+        "atomicNumber": 35,
+        "symbol": "Br",
+        "name": "Bromine",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁵",
+        "type": "Nonmetal",
+        "group_block": "Halogen",
+        "period": 4,
+        "vietnameseName": "Brom",
+        "group": "VIIA"
+    },
+    {
+        "atomicNumber": 36,
+        "symbol": "Kr",
+        "name": "Krypton",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 4,
+        "vietnameseName": "Krypton",
+        "group": "VIIIA"
+    },
+    {
+        "atomicNumber": 37,
+        "symbol": "Rb",
+        "name": "Rubidium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s¹",
+        "type": "Alkali Metal",
+        "group_block": "Alkali Metal",
+        "period": 5,
+        "vietnameseName": "Rubi",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 38,
+        "symbol": "Sr",
+        "name": "Strontium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s²",
+        "type": "Alkaline Earth Metal",
+        "group_block": "Alkaline Earth Metal",
+        "period": 5,
+        "vietnameseName": "Xtroni",
+        "group": "IIA"
+    },
+    {
+        "atomicNumber": 39,
+        "symbol": "Y",
+        "name": "Yttrium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹",
+        "type": "Transition Metal",
+        "group_block": "Scandium",
+        "period": 5,
+        "vietnameseName": "Yttri",
+        "group": "IIIB"
+    },
+    {
+        "atomicNumber": 40,
+        "symbol": "Zr",
+        "name": "Zirconium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d²",
+        "type": "Transition Metal",
+        "group_block": "Titanium",
+        "period": 5,
+        "vietnameseName": "Ziconi",
+        "group": "IVB"
+    },
+    {
+        "atomicNumber": 41,
+        "symbol": "Nb",
+        "name": "Niobium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d³",
+        "type": "Transition Metal",
+        "group_block": "Vanadium",
+        "period": 5,
+        "vietnameseName": "Niobi",
+        "group": "VB"
+    },
+    {
+        "atomicNumber": 42,
+        "symbol": "Mo",
+        "name": "Molybdenum",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d⁴",
+        "type": "Transition Metal",
+        "group_block": "Chromium",
+        "period": 5,
+        "vietnameseName": "Molipđen",
+        "group": "VIB"
+    },
+    {
+        "atomicNumber": 43,
+        "symbol": "Tc",
+        "name": "Technetium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d⁵",
+        "type": "Transition Metal",
+        "group_block": "Technetium",
+        "period": 5,
+        "vietnameseName": "Tekneti",
+        "group": "VIIB"
+    },
+    {
+        "atomicNumber": 44,
+        "symbol": "Ru",
+        "name": "Ruthenium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d⁶",
+        "type": "Transition Metal",
+        "group_block": "Ruthenium",
+        "period": 5,
+        "vietnameseName": "Ruteni",
+        "group": "VIIIB"
+    },
+    {
+        "atomicNumber": 45,
+        "symbol": "Rh",
+        "name": "Rhodium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d⁷",
+        "type": "Transition Metal",
+        "group_block": "Rhodium",
+        "period": 5,
+        "vietnameseName": "Rodit",
+        "group": "VIIIB"
+    },
+    {
+        "atomicNumber": 46,
+        "symbol": "Pd",
+        "name": "Palladium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d⁸",
+        "type": "Transition Metal",
+        "group_block": "Palladium",
+        "period": 5,
+        "vietnameseName": "Paladi",
+        "group": "VIIIB"
+    },
+    {
+        "atomicNumber": 47,
+        "symbol": "Ag",
+        "name": "Silver",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d⁹",
+        "type": "Transition Metal",
+        "group_block": "Copper",
+        "period": 5,
+        "vietnameseName": "Bạc",
+        "group": "IB"
+    },
+    {
+        "atomicNumber": 48,
+        "symbol": "Cd",
+        "name": "Cadmium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰",
+        "type": "Transition Metal",
+        "group_block": "Cadmium",
+        "period": 5,
+        "vietnameseName": "Cadmium",
+        "group": "IIB"
+    },
+    {
+        "atomicNumber": 49,
+        "symbol": "In",
+        "name": "Indium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p¹",
+        "type": "Post-Transition Metal",
+        "group_block": "Boron",
+        "period": 5,
+        "vietnameseName": "Indi",
+        "group": "IIIA"
+    },
+    {
+        "atomicNumber": 50,
+        "symbol": "Sn",
+        "name": "Tin",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p²",
+        "type": "Post-Transition Metal",
+        "group_block": "Carbon",
+        "period": 5,
+        "vietnameseName": "Thiếc",
+        "group": "IVA"
+    },
+    {
+        "atomicNumber": 51,
+        "symbol": "Sb",
+        "name": "Antimony",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p³",
+        "type": "Metalloid",
+        "group_block": "Nitrogen",
+        "period": 5,
+        "vietnameseName": "Antimon",
+        "group": "VA"
+    },
+    {
+        "atomicNumber": 52,
+        "symbol": "Te",
+        "name": "Tellurium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁴",
+        "type": "Metalloid",
+        "group_block": "Oxygen",
+        "period": 5,
+        "vietnameseName": "Telluri",
+        "group": "VIA"
+    },
+    {
+        "atomicNumber": 53,
+        "symbol": "I",
+        "name": "Iodine",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁵",
+        "type": "Nonmetal",
+        "group_block": "Halogen",
+        "period": 5,
+        "vietnameseName": "Iốt",
+        "group": "VIIA"
+    },
+    {
+        "atomicNumber": 54,
+        "symbol": "Xe",
+        "name": "Xenon",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 5,
+        "vietnameseName": "Xenon",
+        "group": "VIIIA"
+    },
+    {
+        "atomicNumber": 55,
+        "symbol": "Cs",
+        "name": "Cesium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s¹",
+        "type": "Alkali Metal",
+        "group_block": "Alkali Metal",
+        "period": 6,
+        "vietnameseName": "Xesi",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 56,
+        "symbol": "Ba",
+        "name": "Barium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s²",
+        "type": "Alkaline Earth Metal",
+        "group_block": "Alkaline Earth Metal",
+        "period": 6,
+        "vietnameseName": "Bari",
+        "group": "IIA"
+    },
+    {
+        "atomicNumber": 57,
+        "symbol": "La",
+        "name": "Lanthanum",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Lantan",
+        "group": "La"
+    },
+    {
+        "atomicNumber": 58,
+        "symbol": "Ce",
+        "name": "Cerium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹ 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Xeri",
+        "group": "Ce"
+    },
+    {
+        "atomicNumber": 59,
+        "symbol": "Pr",
+        "name": "Praseodymium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f³ 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Praseodi",
+        "group": "Pr"
+    },
+    {
+        "atomicNumber": 60,
+        "symbol": "Nd",
+        "name": "Neodymium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f⁴ 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Neodimi",
+        "group": "Nd"
+    },
+    {
+        "atomicNumber": 61,
+        "symbol": "Pm",
+        "name": "Promethium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f⁵ 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Promezi",
+        "group": "Pm"
+    },
+    {
+        "atomicNumber": 62,
+        "symbol": "Sm",
+        "name": "Samarium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f⁶ 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Samarizi",
+        "group": "Sm"
+    },
+    {
+        "atomicNumber": 63,
+        "symbol": "Eu",
+        "name": "Europium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f⁷ 5d¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Châu Âu",
+        "group": "Eu"
+    },
+    {
+        "atomicNumber": 64,
+        "symbol": "Gd",
+        "name": "Gadolinium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f⁷ 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Gadolini",
+        "group": "Gd"
+    },
+    {
+        "atomicNumber": 65,
+        "symbol": "Tb",
+        "name": "Terbium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f⁹ 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Tebi",
+        "group": "Tb"
+    },
+    {
+        "atomicNumber": 66,
+        "symbol": "Dy",
+        "name": "Dysprosium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁰ 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Dysprozi",
+        "group": "Dy"
+    },
+    {
+        "atomicNumber": 67,
+        "symbol": "Ho",
+        "name": "Holmium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹¹ 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Holmi",
+        "group": "Ho"
+    },
+    {
+        "atomicNumber": 68,
+        "symbol": "Er",
+        "name": "Erbium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹² 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Erbizi",
+        "group": "Er"
+    },
+    {
+        "atomicNumber": 69,
+        "symbol": "Tm",
+        "name": "Thulium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹³ 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Thuli",
+        "group": "Tm"
+    },
+    {
+        "atomicNumber": 70,
+        "symbol": "Yb",
+        "name": "Ytterbium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹ 6p¹",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Ytterbi",
+        "group": "Yb"
+    },
+    {
+        "atomicNumber": 71,
+        "symbol": "Lu",
+        "name": "Lutetium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹ 6p²",
+        "type": "Lanthanide",
+        "group_block": "Lanthanide",
+        "period": 6,
+        "vietnameseName": "Lutezi",
+        "group": "Lu"
+    },
+    {
+        "atomicNumber": 72,
+        "symbol": "Hf",
+        "name": "Hafnium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d² 6p²",
+        "type": "Transition Metal",
+        "group_block": "Titanium",
+        "period": 6,
+        "vietnameseName": "Hafni",
+        "group": "IVB"
+    },
+    {
+        "atomicNumber": 73,
+        "symbol": "Ta",
+        "name": "Tantalum",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d³ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Vanadium",
+        "period": 6,
+        "vietnameseName": "Tanta",
+        "group": "VB"
+    },
+    {
+        "atomicNumber": 74,
+        "symbol": "W",
+        "name": "Tungsten",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d⁴ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Chromium",
+        "period": 6,
+        "vietnameseName": "Tungsten",
+        "group": "VIB"
+    },
+    {
+        "atomicNumber": 75,
+        "symbol": "Re",
+        "name": "Rhenium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d⁵ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Manganese",
+        "period": 6,
+        "vietnameseName": "Ren",
+        "group": "VIIB"
+    },
+    {
+        "atomicNumber": 76,
+        "symbol": "Os",
+        "name": "Osmium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d⁶ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Iron",
+        "period": 6,
+        "vietnameseName": "Osmi",
+        "group": "VIII"
+    },
+    {
+        "atomicNumber": 77,
+        "symbol": "Ir",
+        "name": "Iridium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d⁷ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Iron",
+        "period": 6,
+        "vietnameseName": "Irit",
+        "group": "VIII"
+    },
+    {
+        "atomicNumber": 78,
+        "symbol": "Pt",
+        "name": "Platinum",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d⁹ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Iron",
+        "period": 6,
+        "vietnameseName": "Bạch kim",
+        "group": "VIII"
+    },
+    {
+        "atomicNumber": 79,
+        "symbol": "Au",
+        "name": "Gold",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p¹",
+        "type": "Transition Metal",
+        "group_block": "Copper",
+        "period": 6,
+        "vietnameseName": "Vàng",
+        "group": "IB"
+    },
+    {
+        "atomicNumber": 80,
+        "symbol": "Hg",
+        "name": "Mercury",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p²",
+        "type": "Transition Metal",
+        "group_block": "Mercury",
+        "period": 6,
+        "vietnameseName": "Thủy ngân",
+        "group": "IIB"
+    },
+    {
+        "atomicNumber": 81,
+        "symbol": "Tl",
+        "name": "Thallium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p³",
+        "type": "Post-Transition Metal",
+        "group_block": "Boron",
+        "period": 6,
+        "vietnameseName": "Thallium",
+        "group": "IIIA"
+    },
+    {
+        "atomicNumber": 82,
+        "symbol": "Pb",
+        "name": "Lead",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁴",
+        "type": "Post-Transition Metal",
+        "group_block": "Carbon",
+        "period": 6,
+        "vietnameseName": "Chì",
+        "group": "IVA"
+    },
+    {
+        "atomicNumber": 83,
+        "symbol": "Bi",
+        "name": "Bismuth",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁵",
+        "type": "Post-Transition Metal",
+        "group_block": "Nitrogen",
+        "period": 6,
+        "vietnameseName": "Bitmut",
+        "group": "VA"
+    },
+    {
+        "atomicNumber": 84,
+        "symbol": "Po",
+        "name": "Polonium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶",
+        "type": "Metalloid",
+        "group_block": "Oxygen",
+        "period": 6,
+        "vietnameseName": "Poloni",
+        "group": "VIA"
+    },
+    {
+        "atomicNumber": 85,
+        "symbol": "At",
+        "name": "Astatine",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f⁵ 6d¹ 7s¹",
+        "type": "Halogen",
+        "group_block": "Halogen",
+        "period": 6,
+        "vietnameseName": "Astatin",
+        "group": "VIIA"
+    },
+    {
+        "atomicNumber": 86,
+        "symbol": "Rn",
+        "name": "Radon",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f⁶ 6d¹ 7s²",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 6,
+        "vietnameseName": "Radon",
+        "group": "VIIIA"
+    },
+    {
+        "atomicNumber": 87,
+        "symbol": "Fr",
+        "name": "Francium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f⁷ 6d¹ 7s²",
+        "type": "Alkali Metal",
+        "group_block": "Alkali Metal",
+        "period": 7,
+        "vietnameseName": "Franci",
+        "group": "IA"
+    },
+    {
+        "atomicNumber": 88,
+        "symbol": "Ra",
+        "name": "Radium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f⁷ 6d² 7s²",
+        "type": "Alkaline Earth Metal",
+        "group_block": "Alkaline Earth Metal",
+        "period": 7,
+        "vietnameseName": "Radium",
+        "group": "IIA"
+    },
+    {
+        "atomicNumber": 89,
+        "symbol": "Ac",
+        "name": "Actinium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f⁷ 6d³ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Actini",
+        "group": "Ac"
+    },
+    {
+        "atomicNumber": 90,
+        "symbol": "Th",
+        "name": "Thorium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f⁹ 6d² 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Thorium",
+        "group": "Th"
+    },
+    {
+        "atomicNumber": 91,
+        "symbol": "Pa",
+        "name": "Protactinium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁰ 6d² 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Protactini",
+        "group": "Pa"
+    },
+    {
+        "atomicNumber": 92,
+        "symbol": "U",
+        "name": "Uranium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹¹ 6d¹ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Uran",
+        "group": "U"
+    },
+    {
+        "atomicNumber": 93,
+        "symbol": "Np",
+        "name": "Neptunium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹² 6d¹ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Neptuni",
+        "group": "Np"
+    },
+    {
+        "atomicNumber": 94,
+        "symbol": "Pu",
+        "name": "Plutonium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹³ 6d¹ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Plutoni",
+        "group": "Pu"
+    },
+    {
+        "atomicNumber": 95,
+        "symbol": "Am",
+        "name": "Americium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Americi",
+        "group": "Am"
+    },
+    {
+        "atomicNumber": 96,
+        "symbol": "Cm",
+        "name": "Curium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d² 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Curi",
+        "group": "Cm"
+    },
+    {
+        "atomicNumber": 97,
+        "symbol": "Bk",
+        "name": "Berkelium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d³ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Bekeli",
+        "group": "Bk"
+    },
+    {
+        "atomicNumber": 98,
+        "symbol": "Cf",
+        "name": "Californium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d⁴ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Californi",
+        "group": "Cf"
+    },
+    {
+        "atomicNumber": 99,
+        "symbol": "Es",
+        "name": "Einsteinium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d⁵ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Einsteini",
+        "group": "Es"
+    },
+    {
+        "atomicNumber": 100,
+        "symbol": "Fm",
+        "name": "Fermium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d⁶ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Fermi",
+        "group": "Fm"
+    },
+    {
+        "atomicNumber": 101,
+        "symbol": "Md",
+        "name": "Mendelevium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d⁷ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Mendelevi",
+        "group": "Md"
+    },
+    {
+        "atomicNumber": 102,
+        "symbol": "No",
+        "name": "Nobelium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d⁸ 7s²",
+        "type": "Actinide",
+        "group_block": "Actinide",
+        "period": 7,
+        "vietnameseName": "Nobel",
+        "group": "No"
+    },
+    {
+        "atomicNumber": 103,
+        "symbol": "Lr",
+        "name": "Lawrencium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d⁹ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Lawrenci",
+        "group": "Lr"
+    },
+    {
+        "atomicNumber": 104,
+        "symbol": "Rf",
+        "name": "Rutherfordium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁰ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Rutherfordi",
+        "group": "Rf"
+    },
+    {
+        "atomicNumber": 105,
+        "symbol": "Db",
+        "name": "Dubnium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹¹ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Dubni",
+        "group": "Db"
+    },
+    {
+        "atomicNumber": 106,
+        "symbol": "Sg",
+        "name": "Seaborgium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹² 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Seaborgi",
+        "group": "Sg"
+    },
+    {
+        "atomicNumber": 107,
+        "symbol": "Bh",
+        "name": "Bohrium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹³ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Bohri",
+        "group": "Bh"
+    },
+    {
+        "atomicNumber": 108,
+        "symbol": "Hs",
+        "name": "Hassium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Hassi",
+        "group": "Hs"
+    },
+    {
+        "atomicNumber": 109,
+        "symbol": "Mt",
+        "name": "Meitnerium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Meitneri",
+        "group": "Mt"
+    },
+    {
+        "atomicNumber": 110,
+        "symbol": "Ds",
+        "name": "Darmstadtium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Darmstati",
+        "group": "Ds"
+    },
+    {
+        "atomicNumber": 111,
+        "symbol": "Rg",
+        "name": "Roentgenium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Roentgeni",
+        "group": "Rg"
+    },
+    {
+        "atomicNumber": 112,
+        "symbol": "Cn",
+        "name": "Copernicium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s²",
+        "type": "Transition Metal",
+        "group_block": "Transition Metal",
+        "period": 7,
+        "vietnameseName": "Copernici",
+        "group": "Cn"
+    },
+    {
+        "atomicNumber": 113,
+        "symbol": "Nh",
+        "name": "Nihonium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s² 5g⁰ 6f¹ 7d¹ 8s²",
+        "type": "Post-Transition Metal",
+        "group_block": "Nihonium",
+        "period": 7,
+        "vietnameseName": "Nihoni",
+        "group": "Nh"
+    },
+    {
+        "atomicNumber": 114,
+        "symbol": "Fl",
+        "name": "Flerovium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s² 5g¹ 6f¹ 7d¹ 8s²",
+        "type": "Post-Transition Metal",
+        "group_block": "Flerovium",
+        "period": 7,
+        "vietnameseName": "Flerovi",
+        "group": "Fl"
+    },
+    {
+        "atomicNumber": 115,
+        "symbol": "Mc",
+        "name": "Moscovium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s² 5g² 6f¹ 7d¹ 8s²",
+        "type": "Post-Transition Metal",
+        "group_block": "Moscovium",
+        "period": 7,
+        "vietnameseName": "Moscovi",
+        "group": "Mc"
+    },
+    {
+        "atomicNumber": 116,
+        "symbol": "Lv",
+        "name": "Livermorium",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s² 5g² 6f² 7d¹ 8s²",
+        "type": "Post-Transition Metal",
+        "group_block": "Livermorium",
+        "period": 7,
+        "vietnameseName": "Livermori",
+        "group": "Lv"
+    },
+    {
+        "atomicNumber": 117,
+        "symbol": "Ts",
+        "name": "Tennessine",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s² 5g² 6f² 7d² 8s²",
+        "type": "Post-Transition Metal",
+        "group_block": "Tennessine",
+        "period": 7,
+        "vietnameseName": "Tennessini",
+        "group": "Ts"
+    },
+    {
+        "atomicNumber": 118,
+        "symbol": "Og",
+        "name": "Oganesson",
+        "electronConfiguration": "1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d¹⁰ 4p⁶ 5s² 4d¹⁰ 5p⁶ 6s² 4f¹⁴ 5d¹⁰ 6p⁶ 5f¹⁴ 6d¹⁴ 7s² 5g² 6f³ 7d³ 8s²",
+        "type": "Noble Gas",
+        "group_block": "Noble Gas",
+        "period": 7,
+        "vietnameseName": "Oganeson",
+        "group": "VIIIA"
+    }
+];
+
+const searchButton = document.getElementById("searchButton");
+const elementInput = document.getElementById("elementInput");
+const resultBox = document.getElementById("resultBox");
+
+searchButton.addEventListener("click", function () {
+    const userInput = elementInput.value.trim();
+    const elementData = findElement(userInput);
+    displayElementInfo(elementData);
+});
+
+function findElement(userInput) {
+    let foundElement = elementsData.find((element) =>
+        element.symbol.toLowerCase() === userInput.toLowerCase() ||
+        element.atomicNumber === parseInt(userInput) ||
+        element.name.toLowerCase() === userInput.toLowerCase()
+    );
+    if (!foundElement) {
+        foundElement = elementsData.find((element) =>
+            element.vietnameseName.toLowerCase() === userInput.toLowerCase()
+        );
+    }
+
+    return foundElement;
+}
+
+function displayElementInfo(elementData) {
+    if (elementData) {
+        resultBox.innerHTML = `
+            <p><strong>Tên nguyên tố:</strong> ${elementData.name}</p>
+            <p><strong>Tên Tiếng Việt:</strong> ${elementData.vietnameseName}</p>
+            <p><strong>Kí hiệu:</strong> ${elementData.symbol}</p>
+            <p><strong>Số nguyên tử (Z):</strong> ${elementData.atomicNumber}</p>
+            <p><strong>Cấu hình electron:</strong> ${elementData.electronConfiguration}</p>
+            <p><strong>Loại nguyên tố:</strong> ${elementData.type}</p>
+            <p><strong>Group Block:</strong> ${elementData.group_block}</p>
+            <p><strong>Nhóm thuộc:</strong> ${elementData.group}</p>
+            <p><strong>Chu kỳ thuộc:</strong> ${elementData.period}</p>
+        `;
+    } else {
+        resultBox.innerHTML = "<p>Không tìm thấy thông tin cho nguyên tố này.</p>";
+    }
+}
+    </script>
+</body>
+</html>
